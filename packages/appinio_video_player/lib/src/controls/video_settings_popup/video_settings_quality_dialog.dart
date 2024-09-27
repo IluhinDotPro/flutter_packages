@@ -13,43 +13,28 @@ class VideoSettingsQualityDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VideoSettingsQualityDialog> createState() =>
-      _VideoSettingsQualityDialogState();
+  State<VideoSettingsQualityDialog> createState() => _VideoSettingsQualityDialogState();
 }
 
-class _VideoSettingsQualityDialogState
-    extends State<VideoSettingsQualityDialog> {
+class _VideoSettingsQualityDialogState extends State<VideoSettingsQualityDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: widget
-                .customVideoPlayerController
-                .customVideoPlayerSettings
-                .customVideoPlayerPopupSettings
-                .popupDecoration
-                .borderRadius ??
+        borderRadius: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupDecoration.borderRadius ??
             BorderRadius.zero,
       ),
       child: Container(
-        padding: widget.customVideoPlayerController.customVideoPlayerSettings
-            .customVideoPlayerPopupSettings.popupPadding,
-        width: widget.customVideoPlayerController.customVideoPlayerSettings
-            .customVideoPlayerPopupSettings.popupWidth,
-        decoration: widget.customVideoPlayerController.customVideoPlayerSettings
-            .customVideoPlayerPopupSettings.popupDecoration,
+        padding: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupPadding,
+        width: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupWidth,
+        decoration: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupDecoration,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.customVideoPlayerController.customVideoPlayerSettings
-                  .customVideoPlayerPopupSettings.popupQualityTitle,
-              style: widget
-                  .customVideoPlayerController
-                  .customVideoPlayerSettings
-                  .customVideoPlayerPopupSettings
-                  .popupTitleTextStyle,
+              widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupQualityTitle,
+              style: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings.popupTitleTextStyle,
             ),
             const SizedBox(
               height: 8,
@@ -60,21 +45,16 @@ class _VideoSettingsQualityDialogState
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
                 children: [
-                  for (MapEntry<String, CachedVideoPlayerController> videoSource
-                      in widget.customVideoPlayerController
-                          .additionalVideoSources!.entries)
+                  for (MapEntry<String, CachedVideoPlayerPlusController> videoSource
+                      in widget.customVideoPlayerController.additionalVideoSources!.entries)
                     VideoSettingsDialogItem(
                       title: videoSource.key,
-                      popupSettings: widget
-                          .customVideoPlayerController
-                          .customVideoPlayerSettings
-                          .customVideoPlayerPopupSettings,
+                      popupSettings: widget.customVideoPlayerController.customVideoPlayerSettings.customVideoPlayerPopupSettings,
                       onPressed: () => _changeVideoQuality(
                         context: context,
                         selectedSource: videoSource.key,
                       ),
-                      selected:
-                          _getCurrentVideoPlayerSource() == videoSource.key,
+                      selected: _getCurrentVideoPlayerSource() == videoSource.key,
                     ),
                 ],
               ),
@@ -88,9 +68,7 @@ class _VideoSettingsQualityDialogState
   String _getCurrentVideoPlayerSource() {
     return widget.customVideoPlayerController.additionalVideoSources!.entries
         .toList()
-        .firstWhere((element) =>
-            element.value ==
-            widget.customVideoPlayerController.videoPlayerController)
+        .firstWhere((element) => element.value == widget.customVideoPlayerController.videoPlayerController)
         .key;
   }
 
@@ -99,8 +77,7 @@ class _VideoSettingsQualityDialogState
     required String selectedSource,
   }) async {
     if (_getCurrentVideoPlayerSource() != selectedSource) {
-      await widget.customVideoPlayerController
-          .switchVideoSource(selectedSource);
+      await widget.customVideoPlayerController.switchVideoSource(selectedSource);
       widget.updateView();
       //maybe popup was dismissed on barrier tap before
       if (mounted) {
